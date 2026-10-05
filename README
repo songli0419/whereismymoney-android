@@ -1,1 +1,14 @@
-我钱呢 Android
+我钱呢？！Android
+
+永久签名维护约定（2026-10-05）
+唯一有效构建流程：.github/workflows/build-android.yml。根目录旧 build-android.yml 不参与构建，请勿重新启用。
+应用 ID：com.whereismymoney.app，必须保持不变。
+签名 alias：whereismymoney。
+签名证书 SHA-256：D8ED2656B09B1ECF5EF1695F9B2D073E98E579D8AFD6D14F3B3D53D40DC9FC02
+签名密钥已经固定，加密密钥文件嵌在工作流中；解密密码保存在仓库 Actions secret SIGNING_PASSWORD。
+以后修改功能时必须保留现有加密密钥及该 secret，不得生成新密钥，也不得使用 debug 签名。
+每次构建使用递增 versionCode，最终 APK 必须通过 apksigner 并匹配以上证书指纹，否则停止发布。
+私钥及密码另有私人备份，请勿将明文私钥、密码或备份 ZIP 上传到公开仓库。
+
+1.0.5 日期修复：启动及从后台返回时按手机本地日期跳到今天和当前月；前台跨日自动刷新；翻查历史不会因定时检查立即被打断；原账目存储保持不变。
+首次迁移到这套签名需要卸载旧签名版本（旧记录会删除，用户已选择手动重新录入）。以后同签名较高版本可以覆盖安装，保留应用数据。
