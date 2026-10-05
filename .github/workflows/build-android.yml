@@ -87,8 +87,8 @@ jobs:
         run: |
           set -euo pipefail
           signer=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -1)
-          "$signer" verify --verbose --print-certs android-app/app/build/outputs/apk/release/app-release.apk > apk-signature.txt
-          actual=$(sed -n 's/^Signer #1 certificate SHA-256 digest: //p' apk-signature.txt | tr '[:lower:]' '[:upper:]')
+          "$signer" verify --verbose --print-certs android-app/app/build/outputs/apk/release/app-release.apk | tee apk-signature.txt
+          actual=$(sed -n 's/.*certificate SHA-256 digest: //p' apk-signature.txt | head -1 | tr -d ': \r\n' | tr '[:lower:]' '[:upper:]')
           expected=$(tr -d '\r\n' < signing/certificate-sha256.txt)
           test "$actual" = "$expected"
           cp android-app/app/build/outputs/apk/release/app-release.apk whereismymoney.apk
